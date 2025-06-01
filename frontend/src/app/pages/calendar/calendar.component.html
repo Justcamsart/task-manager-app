@@ -1,0 +1,55 @@
+<div class="bg-primary p-6 rounded-2xl shadow-soft">
+  <!-- En-tête -->
+  <div class="flex justify-between items-center mb-4">
+    <h2 class="text-lg font-semibold">Calendrier</h2>
+    <div class="flex items-center gap-2 text-sm text-grayText">
+      <button *ngIf="!preview" (click)="goToPreviousMonth()" class="hover:text-accent">&larr;</button>
+      <span class="capitalize">{{ monthName }} {{ currentYear }}</span>
+      <button *ngIf="!preview" (click)="goToNextMonth()" class="hover:text-accent">&rarr;</button>
+    </div>
+  </div>
+
+  <!-- Jours de la semaine -->
+  <div class="grid grid-cols-7 text-center text-sm text-grayText font-medium mb-2">
+    <div *ngFor="let day of weekDays">{{ day }}</div>
+  </div>
+
+  <!-- Jours du mois -->
+  <div class="grid grid-cols-7 text-center gap-y-2">
+    <ng-container *ngFor="let day of days">
+      <div *ngIf="day !== null; else emptyDay">
+        <div
+          (click)="!preview && selectDay(day)"
+          class="w-8 h-8 mx-auto rounded-full flex items-center justify-center cursor-pointer transition-all"
+          [ngClass]="{
+            'bg-redAccent text-white font-semibold': isToday(day),
+            'bg-accent text-white': hasEvent(day) && !isToday(day),
+            'ring-2 ring-accent': selectedDay === day && !isToday(day) && !preview,
+            'text-dark hover:bg-muted': !isToday(day) && !hasEvent(day)
+          }"
+        >
+          {{ day }}
+        </div>
+      </div>
+      <ng-template #emptyDay><div></div></ng-template>
+    </ng-container>
+  </div>
+
+  <!-- Détails d'événements -->
+  <div *ngIf="!preview" class="mt-6 p-4 bg-muted rounded-xl text-sm">
+    <ng-container *ngIf="selectedDay !== null; else noDay">
+      <h3 class="font-semibold mb-2">Événements pour le {{ selectedDay }} {{ monthName }} {{ currentYear }}</h3>
+      <ng-container *ngIf="eventsMap[getKey(selectedDay)]?.length; else noEvents">
+        <ul class="list-disc list-inside">
+          <li *ngFor="let event of eventsMap[getKey(selectedDay)]">{{ event }}</li>
+        </ul>
+      </ng-container>
+      <ng-template #noEvents>
+        <p class="text-grayText italic">Aucun événement prévu à cette date.</p>
+      </ng-template>
+    </ng-container>
+    <ng-template #noDay>
+      <p class="text-grayText italic">Cliquez sur un jour pour voir les événements.</p>
+    </ng-template>
+  </div>
+</div>

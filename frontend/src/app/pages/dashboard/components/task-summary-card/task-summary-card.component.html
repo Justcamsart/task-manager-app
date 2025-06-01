@@ -1,0 +1,7 @@
+<div class="rounded-xl p-4 shadow-soft bg-light text-dark w-full">
+  <div class="flex justify-between items-center mb-2">
+    <h3 class="font-semibold text-sm">{{ title }}</h3>
+    <ng-content select="[icon]"></ng-content>
+  </div>
+  <p class="text-sm text-grayText">{{ completed }}/{{ total }} Completed</p>
+</div>

@@ -1,0 +1,129 @@
+<div class="bg-white p-6 rounded-2xl shadow-soft min-h-[90vh] flex flex-col">
+  <!-- Header -->
+  <div class="flex justify-between items-center mb-4">
+    <h2 class="text-xl font-semibold">Liste des Tâches</h2>
+    <div class="flex items-center gap-4">
+      <span class="text-sm text-grayText">{{ tasks.length }} tâches au total</span>
+      <button
+        class="bg-accent text-white px-4 py-2 rounded hover:bg-opacity-90 transition"
+        (click)="openAddTaskForm()"
+      >
+        + Ajouter une tâche
+      </button>
+    </div>
+  </div>
+
+  <!-- Table scrollable -->
+  <div class="overflow-y-auto flex-1">
+    <table class="min-w-full text-sm text-left">
+      <thead class="text-gray-600 border-b sticky top-0 bg-white z-10">
+        <tr>
+          <th class="py-2">Tâche</th>
+          <th class="py-2">Statut</th>
+          <th class="py-2">Progression</th>
+          <th class="py-2">Deadline</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let task of tasks" class="border-b hover:bg-gray-50 transition">
+          <td class="py-3 font-medium">{{ task.title }}</td>
+
+          <!-- Statut + dropdown -->
+          <td class="py-3">
+            <div class="relative inline-block text-left">
+              <span
+                class="px-3 py-1 text-xs rounded-full font-semibold cursor-pointer"
+                [ngClass]="getStatusClass(task.status)"
+                (click)="toggleDropdown(task)"
+              >
+                {{ task.status }}
+              </span>
+
+              <div
+                *ngIf="task.showDropdown"
+                class="absolute z-10 mt-1 w-28 bg-white border border-gray-200 rounded shadow-lg"
+              >
+                <ul>
+                  <li
+                    *ngFor="let status of statusOptions"
+                    class="px-3 py-1 text-sm hover:bg-gray-100 cursor-pointer"
+                    (click)="updateStatus(task._id!, status)"
+                  >
+                    {{ status }}
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </td>
+
+          <!-- Progression -->
+          <td class="py-3">
+            <div class="w-40 bg-border rounded-full h-2">
+              <div
+                class="h-2 rounded-full"
+                [ngStyle]="{
+                  'width.%': task.progress,
+                  'backgroundColor': getProgressColor(task.progress)
+                }"
+              ></div>
+            </div>
+            <div class="text-xs mt-1 text-gray-500">{{ task.progress }}%</div>
+          </td>
+
+          <!-- Deadline -->
+          <td class="py-3">{{ task.deadline | date: 'dd/MM/yyyy' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- MODAL ajout de tâche -->
+<div
+  *ngIf="showAddForm"
+  class="fixed inset-0 bg-black bg-opacity-40 z-50 flex items-center justify-center"
+>
+  <div class="bg-white p-6 rounded-lg shadow-xl w-full max-w-md">
+    <h3 class="text-lg font-semibold mb-4">Ajouter une tâche</h3>
+
+    <form (ngSubmit)="addTask()" class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium mb-1">Titre</label>
+        <input
+          [(ngModel)]="newTask.title"
+          name="title"
+          required
+          class="w-full border rounded p-2"
+        />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-1">Deadline</label>
+        <input
+          type="date"
+          [(ngModel)]="newTask.deadline"
+          name="deadline"
+          required
+          class="w-full border rounded p-2"
+        />
+      </div>
+
+      <!-- Boutons -->
+      <div class="flex justify-end gap-2 pt-2">
+        <button
+          type="button"
+          (click)="showAddForm = false"
+          class="px-4 py-2 rounded border"
+        >
+          Annuler
+        </button>
+        <button
+          type="submit"
+          class="px-4 py-2 bg-accent text-white rounded hover:bg-opacity-90"
+        >
+          Ajouter
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

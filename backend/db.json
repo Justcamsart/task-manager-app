@@ -1,0 +1,16 @@
+{
+  "events": [
+    {
+      "date": "2025-05-31",
+      "description": "Réunion équipe marketing"
+    },
+    {
+      "date": "2025-06-03",
+      "description": "Livraison du sprint"
+    },
+     {
+      "date": "2025-06-18",
+      "description": "Livraison des patchs"
+    }
+  ]
+}

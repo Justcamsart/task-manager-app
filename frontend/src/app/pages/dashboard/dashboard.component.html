@@ -1,0 +1,53 @@
+<div class="bg-primary p-8 rounded-[2.5rem] min-h-[90vh] shadow-soft text-dark">
+  <h2 class="text-xl font-semibold mb-6">Bonjour, Camille !</h2>
+
+  <!-- Section résumé des tâches -->
+   <div class="bg-muted rounded-3xl p-6 shadow-soft mb-10">
+    <h3 class="font-semibold mb-4">Mes Tâches</h3>
+  <div class="grid grid-cols-2 gap-6 mt-4">
+  <div class="bg-primary p-6 rounded-2xl shadow-soft">
+    <h3 class="font-bold text-lg mb-2">À faire</h3>
+    <p class="text-sm text-grayText">{{ taskStats['àFaire'].completed }}/{{ taskStats['àFaire'].total }} complétées</p>
+  </div>
+  <div class="bg-secondary p-6 rounded-2xl shadow-soft">
+    <h3 class="font-bold text-lg mb-2">En cours</h3>
+    <p class="text-sm text-grayText">{{ taskStats['enCours'].completed }}/{{ taskStats['enCours'].total }} complétées</p>
+  </div>
+  <div class="bg-secondary p-6 rounded-2xl shadow-soft">
+    <h3 class="font-bold text-lg mb-2">Terminée</h3>
+    <p class="text-sm text-grayText">{{ taskStats['terminée'].completed }}/{{ taskStats['terminée'].total }} complétées</p>
+  </div>
+  <div class="bg-primary p-6 rounded-2xl shadow-soft">
+    <h3 class="font-bold text-lg mb-2">En attente</h3>
+    <p class="text-sm text-grayText">{{ taskStats['enAttente'].completed }}/{{ taskStats['enAttente'].total }} complétées</p>
+  </div>
+</div>
+
+  </div>
+
+  <!-- Section progression et calendrier -->
+  <div class="grid grid-cols-2 gap-6">
+    <!-- Progression -->
+    <div class="bg-muted rounded-xl p-6 shadow-soft">
+      <h3 class="font-semibold mb-4">Progression des tâches</h3>
+      <ng-container *ngFor="let progress of taskProgress">
+        <div class="mb-4">
+          <p class="text-sm font-semibold">{{ progress.title }}</p>
+          <div class="w-full h-2 bg-border rounded mt-2">
+            <div
+              class="h-2 rounded"
+              [ngStyle]="{ 'width.%': progress.percent, 'background-color': progress.color }"
+            ></div>
+          </div>
+          <p class="text-xs text-grayText mt-1">{{ progress.percent }}% complété</p>
+        </div>
+      </ng-container>
+    </div>
+
+    <!-- Calendrier -->
+    <div class="bg-secondary rounded-xl p-6 text-dark shadow-soft">
+      <app-calendar [showDetails]="false"></app-calendar>
+
+    </div>
+  </div>
+</div>
